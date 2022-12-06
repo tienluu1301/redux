@@ -1,0 +1,23 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+}
+
+.link {
+    text-transform: capitalize;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &.active {
+        color: black;
+    }
+
+}
+
+
+.slash {
+    padding: 0 8px;
+}

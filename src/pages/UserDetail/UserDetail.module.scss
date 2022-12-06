@@ -1,0 +1,46 @@
+.wrapper {
+    padding: 0 40px;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 0;
+}
+
+.control {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.infoWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .info {
+        display: flex;
+        word-break: break-all;
+
+        p {
+            width: 140px;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+    }
+}
+
+.avatar {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: min(200px, 100%);
+        object-fit: cover;
+    }
+}

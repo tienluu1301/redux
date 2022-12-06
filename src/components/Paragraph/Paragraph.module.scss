@@ -1,0 +1,10 @@
+.more {
+    cursor: pointer;
+    font-weight: 500;
+    margin-left: 6px;
+    color: #333;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

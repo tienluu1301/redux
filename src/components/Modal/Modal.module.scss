@@ -1,0 +1,46 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: min(600px, 90%);
+    max-height: 90%;
+    overflow-y: overlay;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    color: var(--text-color);
+    transform: translate(-50%, -50%);
+    background-color: var(--bg-light-color);
+    border-radius: 8px;
+}
+
+.header {
+    padding: 20px;
+    font-size: 1.8rem;
+}
+
+.body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: overlay;
+}
+
+.footer {
+    padding: 20px;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 6px;
+    background-color: transparent;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--text-color);
+    cursor: pointer;
+
+    &:hover {
+        color: var(--text-hover-color);
+    }
+}

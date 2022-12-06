@@ -1,0 +1,53 @@
+.wrapper {
+    position: absolute;
+    z-index: -2;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    z-index: 0;
+
+    h2 {
+        font-size: 8rem;
+    }
+
+    h3 {
+        font-size: 2.6rem;
+    }
+
+    p {
+        font-size: 2.2rem;
+    }
+
+    img {
+        position: absolute;
+        z-index: -1;
+        width: 40%;
+        top: 10%;
+        left: 10%;
+        animation: floating 5s ease infinite;
+        opacity: 0.5;
+    }
+}
+
+@keyframes floating {
+    0% {
+        transform: translatey(0px);
+    }
+
+    50% {
+        transform: translatey(-20px);
+    }
+
+    100% {
+        transform: translatey(0px);
+    }
+}

@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+:root {
+    --white-color: white;
+    --black-color: black;
+    --primary-color: rgb(0, 82, 204); //#2c7be5
+    --primary-light-color: rgb(230, 239, 252); //#2c7be5
+    --primary-hover-color: #1c63ce;
+
+    // link color
+    --link-color: var(--primary-color);
+    --link-hover-color: rgb(35, 98, 183);
+
+    // error color
+    --error-color: rgb(252, 46, 46);
+
+    // background color
+    --bg-color: rgb(250, 251, 252); // rgb(237, 242, 249);
+    --bg-light-color: rgb(255, 255, 255);
+    --bg-dark-color: rgb(244, 245, 247); //rgb(205, 205, 212);
+
+    // heading color
+    --heading-color: rgb(94, 108, 132);
+
+    // title color
+    --title-color: rgb(66, 82, 110);
+    --sub-title-color: rgb(94, 108, 132); //rgb(23, 43, 77);
+
+    // text color
+    --text-color: rgb(23, 43, 77); //rgb(94, 110, 130);
+    --text-hover-color: rgb(35, 46, 60);
+    --text-light-color: rgb(107, 119, 140); //rgb(116, 129, 148);
+
+    // button color
+    --button-text-color: rgb(77, 89, 105);
+    --button-text-hover-color: rgb(64, 74, 87);
+    --button-color: var(--white-color);
+    --button-hover-color: rgb(249, 250, 253);
+    --button-box-shadow: 0 0 0 1px rgba(43, 45, 80, 0.1), 0 2px 5px 0 rgba(43, 45, 80, 0.08), 0 1px 1.5px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+    --button-hover-box-shadow: 0 0 0 1px rgba(43, 45, 80, 0.1), 0 2px 5px 0 rgba(43, 45, 80, 0.1), 0 3px 9px 0 rgba(43, 45, 80, 0.08), 0 1px 1.5px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+    --button-border-color: transparent;
+    --button-hover-border-color: transparent;
+    --button-disable-color: rgb(77, 89, 105);
+
+    // Select Menu
+    --select-bg-color: var(--bg-light-color);
+    --select-bg-hover: var(--bg-color);
+
+    // border color
+    --border-color: #DFE1E6; //rgb(216, 226, 239);
+
+    // drop down color
+    --dropdown-bg: rgb(255, 255, 255);
+    --dropdown-hover-bg: var(--primary-light-color);
+
+    --box-shadow: 0 7px 14px 0 rgba(3, 12, 51, 0.15), 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+
+    //input
+    --input-border-color: #DFE1E6;
+    --input-border-focus-color: #4C9AFF;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+img {
+    display: block;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    border: none;
+    outline: none;
+}
+
+// html *::-webkit-scrollbar {
+//     border-radius: 0;
+//     width: 4px;
+// }
+
+// html *::-webkit-scrollbar-thumb {
+//     background: rgba(182, 193, 210, 0.15);
+//     border-radius: 4px;
+// }
+
+// html *::-webkit-scrollbar-track {
+//     border-radius: 0;
+//     background-color: rgba(0, 0, 0, 0);
+// }

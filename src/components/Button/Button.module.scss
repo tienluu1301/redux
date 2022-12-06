@@ -1,0 +1,111 @@
+.wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 8px;
+    white-space: nowrap;
+
+    background-color: transparent;
+    text-decoration: none;
+
+    padding: 3px 12px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    outline: none;
+
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--button-text-color);
+
+    min-width: 40px;
+    min-height: 30px;
+
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.ripple {
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+    inset: 0px;
+    border-radius: inherit;
+}
+
+// opacity: 0.3;
+// transform: scale(1);
+// animation-name: animation-1taevns;
+// animation-duration: 550ms;
+// animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+.primary {
+    --button-text-color: var(--white-color);
+    --button-color: var(--primary-color);
+    --button-border-color: var(--primary-color);
+    --button-box-shadow: none;
+
+    --button-text-hover-color: var(--white-color);
+    --button-hover-color: var(--primary-hover-color);
+    --button-hover-border-color: var(--primary-color);
+    --button-hover-box-shadow: none;
+
+    &.outline {
+        --button-text-color: var(--primary-color);
+        --button-text-hover-color: var(--white-color);
+
+    }
+}
+
+.solid {
+    background-color: var(--button-color);
+    border-color: var(--button-border-color);
+    box-shadow: var(--button-box-shadow);
+
+    &:hover {
+        color: var(--button-text-hover-color);
+        background-color: var(--button-hover-color);
+        border-color: var(--button-hover-border-color);
+        box-shadow: var(--button-hover-box-shadow);
+    }
+}
+
+.outline {
+    border-color: var(--button-border-color);
+    box-shadow: unset;
+    background-color: transparent;
+
+    &:hover {
+        color: var(--button-text-hover-color);
+        background-color: var(--button-border-color);
+    }
+}
+
+.round {
+    border-radius: 50%;
+}
+
+.disable {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.small {
+    min-width: 0;
+    padding: 0px 8px;
+}
+
+.large {
+    font-size: 1.6rem;
+    font-weight: 600;
+    min-height: 36px;
+    min-width: 180px;
+    padding: 4px 16px;
+}
+
+.fullWidth {
+    width: 100%;
+}

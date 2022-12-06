@@ -1,0 +1,10 @@
+.wrapper {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--dropdown-bg);
+    box-shadow: var(--box-shadow);
+    padding: 8px 0;
+    max-height: min((100vh - 96px) - 60px, 734px);
+    overflow: hidden auto;
+}
