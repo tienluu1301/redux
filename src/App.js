@@ -8,12 +8,15 @@ import Register from './pages/Register'
 import Page404 from './pages/Page404'
 // import Home from "./pages/Home";
 import Entry from "./pages/Entry";
+
+import MyProjects from "./pages/MyProjects";
 import UserList from "./pages/UserList";
+import UserDetail from "./pages/UserDetail";
 import ProjectList from "./pages/ProjectList";
+
 import KanbanBoard from "./pages/KanbanBoard";
 import ProjectSetting from "./pages/ProjectSetting";
 import UnderDevelopment from "./pages/UnderDevelopment";
-import UserDetail from "./pages/UserDetail";
 
 function App() {
   return (
@@ -36,6 +39,10 @@ function App() {
 
         {/* Project Route */}
         <Route path="projects" element={<ProjectList />} />
+
+        {/* My Projects Route */}
+        <Route path="my-works" element={<MyProjects />} />
+
 
         <Route path="*" element={<Page404 />} />
       </Route>

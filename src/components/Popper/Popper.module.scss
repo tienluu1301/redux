@@ -5,6 +5,6 @@
     background-color: var(--dropdown-bg);
     box-shadow: var(--box-shadow);
     padding: 8px 0;
-    max-height: min((100vh - 96px) - 60px, 734px);
+    max-height: min(80vh, 734px);
     overflow: hidden auto;
 }

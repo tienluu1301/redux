@@ -1,40 +1,37 @@
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    width: min(600px, 90%);
-    max-height: 90%;
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    // width: 100%;
+    // height: 100%;
     overflow-y: overlay;
-    z-index: 1;
-    top: 50%;
-    left: 50%;
-    color: var(--text-color);
-    transform: translate(-50%, -50%);
-    background-color: var(--bg-light-color);
-    border-radius: 8px;
 }
 
 .header {
-    padding: 20px;
+    padding: 10px 0;
     font-size: 1.8rem;
 }
 
 .body {
-    padding: 20px;
+    padding: 10px 0;
     flex: 1;
     overflow-y: overlay;
 }
 
 .footer {
-    padding: 20px;
+    padding: 10px 0;
 }
 
 .closeBtn {
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     top: 16px;
     right: 16px;
     padding: 6px;
     background-color: transparent;
+    border-radius: 50%;
     font-size: 2rem;
     line-height: 1;
     color: var(--text-color);
@@ -42,5 +39,6 @@
 
     &:hover {
         color: var(--text-hover-color);
+        background-color: var(--bg-dark-color);
     }
 }

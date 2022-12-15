@@ -1,13 +1,15 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import classnames from 'classnames/bind'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import styles from './ProjectList.module.scss'
 import Button from '../../components/Button'
 import MoreMenu from '../../components/MoreMenu'
 import SearchBar from '../../components/SearchBar'
 import TableData from '../../components/TableData'
+import ProjectForm from '../component/NewProjectForm'
 
 import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
@@ -21,28 +23,70 @@ import Tooltip from '@mui/material/Tooltip';
 
 
 import { getProjects } from '../../redux/slices/projectSlice'
+import useRequest from '../../hooks/useRequest'
+import projectAPI from '../../services/projectAPI'
+import { toast } from 'react-toastify'
+
 const cx = classnames.bind(styles)
 
 const ProjectList = () => {
+    const { projects, loading, error } = useSelector(state => state.project)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { projects } = useSelector(state => state.project)
+
+    const createProject = useRequest(projectAPI.createProject, { manual: true })
+    const deleteProject = useRequest(projectAPI.deleteProject, { manual: true })
+
+    const [searchParams, setSearchParams] = useSearchParams()
+    const searchValue = searchParams.get('keyword') || ''
 
     useEffect(() => {
-        dispatch(getProjects())
+        // if (projects) return
+        dispatch(getProjects(searchValue))
     }, [])
 
+    const handleSearchParams = (debounceValue) => {
+        console.log("chua render ,a")
+        dispatch(getProjects(debounceValue))
+
+        // kiểm tra xem nếu input có giá trị thì mới set query params,
+        //  nếu không có input value thì xóa qrery params
+        if (!debounceValue) {
+            setSearchParams()
+            return
+        }
+        setSearchParams({ keyword: debounceValue })
+    }
+
+    const handleCreateProject = async (values, formMethod) => {
+        try {
+            const createdProject = await createProject.runAsync(values)
+            dispatch(getProjects(searchValue))
+            formMethod.reset()
+            console.log(formMethod)
+            toast.success(`Create project ${values.projectName} successful`)
+        } catch (error) {
+            toast.error(typeof error === 'string' ? error : JSON.stringify(error))
+        }
+    }
     const handleSelect = (action, id) => {
         if (action === 'detail') {
             navigate(`/jira/projects/${id}/kanban-board`)
         }
 
         if (action === 'setting') {
-
+            navigate(`/jira/projects/${id}/project-setting`)
         }
 
         if (action === 'delete') {
-
+            deleteProject.runAsync(id)
+                .then(() => {
+                    dispatch(getProjects(searchValue))
+                    toast.success("Delete project success")
+                })
+                .catch((error) => {
+                    toast.error("Delete project success")
+                })
         }
     }
 
@@ -103,6 +147,7 @@ const ProjectList = () => {
                                 key={item.userId}
                                 title={item.name}
                                 arrow
+                                disableInteractive
                                 PopperProps={{
                                     sx: {
                                         "& .MuiTooltip-tooltip": {
@@ -145,13 +190,19 @@ const ProjectList = () => {
         <div className={cx('wrapper')}>
             <div className={cx('title')}>
                 <h2>Projects</h2>
-                <div className={cx('control')}>
-                    <Button solid primary>Create Task</Button>
-                    <Button solid primary>Create project</Button>
-                </div>
             </div>
             <div className={cx('filter')}>
-                <SearchBar />
+                <SearchBar
+                    placeholder="Search project here"
+                    value={searchValue}
+                    loading={searchValue && loading}
+                    onClearSearchValue={() => setSearchParams()}
+                    options={{
+                        debounce: true,
+                        time: 400,
+                        onDebounce: handleSearchParams
+                    }}
+                />
             </div>
             <div className={cx('container')}>
                 <TableData
@@ -165,10 +216,11 @@ const ProjectList = () => {
                         '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '4px' },
                         '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': { py: '4px' },
                     }}
-                // loading={loading}
-                // error={error ? error : null}
+                    loading={loading}
+                    error={error ? error : null}
                 />
             </div>
+            <ProjectForm onSubmit={handleCreateProject} />
         </div>
     )
 }

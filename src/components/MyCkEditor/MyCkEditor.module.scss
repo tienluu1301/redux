@@ -1,0 +1,19 @@
+.wrapper {
+    label {
+        font-size: 1.6rem;
+        color: var(--text-light-color);
+        margin-bottom: 4px;
+    }
+
+    .errorMess {
+        display: flex;
+        align-items: center;
+        color: #AE2A19;
+        order: 2;
+        font-size: 0.857143em;
+        font-style: inherit;
+        line-height: 1.33333;
+        display: flex;
+        margin-top: 4px;
+    }
+}

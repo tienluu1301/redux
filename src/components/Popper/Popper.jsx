@@ -8,7 +8,9 @@ let cx = classNames.bind(styles);
 const Popper = ({ children, className }) => {
 
     return (
-        <div className={cx('wrapper', { [className]: className })}>
+        <div
+            className={cx('wrapper', { [className]: className })}
+        >
             {children}
         </div>
     )

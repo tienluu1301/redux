@@ -1,11 +1,19 @@
 .wrapper {
     display: flex;
     height: 100vh;
+    overflow: hidden;
+}
+
+.left {
+    display: flex;
 }
 
 .right {
     flex: 1;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
     // z-index: 1;
 }
 
@@ -13,6 +21,12 @@
     padding: 24px 40px;
 }
 
+.contentWrapper {
+    flex: 1;
+    padding: 0 20px 0 40px;
+    // overflow-x: auto;
+}
+
 .content {
-    padding: 0 40px;
+    min-width: 100%;
 }

@@ -1,0 +1,189 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.taskType {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    gap: 8px;
+    padding: 4px 8px;
+
+    span {
+        font-size: 1.3rem;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+}
+
+.headerLeft {
+    max-width: 200px;
+}
+
+.headerRight {
+    display: flex;
+    gap: 8px;
+}
+
+.headerBtn {
+    font-size: 2rem;
+    margin: 0;
+    padding: 0;
+
+    &:has(>span) {
+        padding: 0 12px;
+    }
+
+    span {
+        font-size: 1.5rem;
+    }
+
+    &:hover {
+        background-color: var(--bg-dark-color);
+    }
+}
+
+.body {
+    display: flex;
+    gap: 50px;
+}
+
+.left {
+    width: 64%;
+}
+
+.right {
+    flex: 1;
+}
+
+.formGroup {
+    h4 {
+        font-size: 1.3rem;
+        color: var(--title-color);
+        padding: 24px 0 6px;
+    }
+}
+
+.titleWrapper {
+    margin-top: 18px;
+
+    .taskName {
+        font-size: 2.4rem;
+        color: var(--text-color);
+        font-weight: 600;
+        height: auto;
+        resize: none;
+        overflow-y: hidden;
+        border-color: transparent;
+        background-color: transparent;
+
+        &:hover {
+            background-color: var(--bg-dark-color);
+        }
+    }
+}
+
+.descriptionControl {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+
+    &.visible {
+        display: flex;
+    }
+}
+
+.editor {
+    display: none;
+    min-height: 30px;
+
+    &.visible {
+        display: block;
+    }
+
+    cursor: text;
+
+    &:hover {
+        background-color: var(--bg-dark-color);
+    }
+}
+
+.taskStatus {
+    padding: 4px 8px;
+    text-transform: uppercase;
+}
+
+.memberWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.member {
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+    background-color: #DFE1E6;
+    border-radius: 4px;
+    padding: 4px 8px;
+    user-select: none;
+
+    span {
+        font-size: 1.4rem;
+        padding: 0 4px 0 8px;
+    }
+
+    &:hover {
+        background-color: #C1C7D0;
+    }
+}
+
+.removeMemberBtn {
+    display: flex;
+    font-size: 1.6rem;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.assignment {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+}
+
+.assignmentBtnWrapper {
+    background-color: transparent;
+    width: fit-content;
+
+    &:hover {
+        background-color: transparent;
+        // text-decoration: underline;
+    }
+}
+
+.assignmentBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary-color);
+
+    &:hover {
+        span {
+            text-decoration: underline;
+        }
+    }
+}
+
+.taskPriority {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 8px;
+}

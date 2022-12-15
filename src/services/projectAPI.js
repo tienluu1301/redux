@@ -14,6 +14,7 @@ const projectAPI = {
     },
 
     getProjects: (keyword) => {
+        if (!keyword) keyword = null
         return fetcher("/Project/getAllProject", {
             params: {
                 keyword

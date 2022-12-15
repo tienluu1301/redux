@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import classnames from 'classnames/bind'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import styles from './UserList.module.scss'
@@ -9,7 +9,7 @@ import Button from '../../components/Button'
 import MoreMenu from '../../components/MoreMenu'
 import SearchBar from '../../components/SearchBar'
 import TableData from '../../components/TableData'
-// import UserEditForm from './UserEditForm'
+import NewUserForm from '../component/NewUserForm'
 
 import Avatar from '@mui/material/Avatar'
 
@@ -25,16 +25,43 @@ import userAPI from '../../services/userAPI'
 const cx = classnames.bind(styles)
 
 const UserList = () => {
+    const { users, loading, error } = useSelector(state => state.user)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { users } = useSelector(state => state.user)
+
+    const [searchParams, setSearchParams] = useSearchParams()
+    const searchValue = searchParams.get('keyword') || ''
 
     const deleteUser = useRequest(userAPI.deleteUser, { manual: true })
+    const createUser = useRequest(userAPI.signup, { manual: true })
 
     useEffect(() => {
-        dispatch(getUsers())
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        dispatch(getUsers(searchValue))
     }, [])
+
+    const handleCreateNewUser = async (value, formMethod) => {
+        try {
+            const createdUser = await createUser.runAsync(value)
+            toast.success("Create user successful")
+            formMethod.reset()
+        } catch (error) {
+            toast.error(typeof error === 'string' ? error : JSON.stringify(error))
+        }
+    }
+
+    const handleSearchParams = (debounceValue) => {
+        console.log("chua render ,a")
+        dispatch(getUsers(debounceValue))
+
+        // kiểm tra xem nếu input có giá trị thì mới set query params,
+        //  nếu không có input value thì không set
+        if (!debounceValue) {
+            setSearchParams()
+            return
+        }
+
+        setSearchParams({ keyword: debounceValue })
+    }
 
     const handleSelect = (action, id) => {
         if (action === 'detail') {
@@ -46,13 +73,13 @@ const UserList = () => {
             navigate(`/jira/users/${id}`)
             return
         }
-
+        console.log("user render")
         if (action === 'delete') {
             console.log(deleteUser)
             deleteUser.runAsync(id)
                 .then(() => {
                     toast.success('Delete user successfull')
-                    dispatch(getUsers())
+                    dispatch(getUsers(searchValue))
                 })
                 .catch((error) => {
                     toast.error(error)
@@ -126,22 +153,31 @@ const UserList = () => {
                 return (
                     <MoreMenu items={actions} placement='bottom-end' onChange={({ action }) => { handleSelect(action, params.row.userId) }}>
                         <MoreHorizOutlinedIcon />
+                        {console.log("table render ne")}
                     </MoreMenu>
                 );
             },
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
     ]
+    console.log("user render")
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title')}>
                 <h2>Users</h2>
-                <div className={cx('control')}>
-                    <Button solid primary>Add user</Button>
-                </div>
             </div>
             <div className={cx('filter')}>
-                <SearchBar />
+                <SearchBar
+                    placeholder="Search user here"
+                    value={searchValue}
+                    loading={searchValue && loading}
+                    onClearSearchValue={() => setSearchParams()}
+                    options={{
+                        debounce: true,
+                        time: 400,
+                        onDebounce: handleSearchParams
+                    }}
+                />
             </div>
             <div className={cx('container')}>
                 <TableData
@@ -155,11 +191,11 @@ const UserList = () => {
                         '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '4px' },
                         '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': { py: '4px' },
                     }}
-                // loading={loading}
-                // error={error ? error : null}
+                    loading={loading}
+                    error={error ? error : null}
                 />
             </div>
-            {/* <UserEditForm /> */}
+            <NewUserForm onSubmit={handleCreateNewUser} />
         </div>
     )
 }

@@ -1,0 +1,77 @@
+.taskItem {
+    background-color: var(--white-color);
+    padding: 10px;
+    border-radius: 2px;
+    box-shadow: var(--ds-shadow-raised, 0 1px 1px rgba(23, 43, 77, 0.2), 0 0 1px rgba(23, 43, 77, 0.2));
+
+    cursor: grab;
+    user-select: none;
+
+    &:hover {
+        background-color: var(--bg-dark-color);
+
+        .taskActionBtn {
+            visibility: visible;
+        }
+    }
+
+    h4 {
+        padding-bottom: 12px;
+    }
+
+
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+.taskActionBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    font-size: 2rem;
+    color: var(--title-color);
+    background-color: var(--white-color);
+    visibility: hidden;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--bg-color);
+    }
+}
+
+.taskMenuActive {
+    .taskActionBtn {
+        visibility: visible;
+        background-color: var(--text-color);
+        color: var(--white-color);
+    }
+}
+
+.taskInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+}
+
+.taskName {
+    font-size: 1.4rem;
+}

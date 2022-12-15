@@ -101,6 +101,7 @@ const UserEditFormModal = ({ open, onClose }) => {
                         <TextField
                             label="id"
                             readOnly
+                            disabled
                             {...register("id", {
                                 required: {
                                     value: true,

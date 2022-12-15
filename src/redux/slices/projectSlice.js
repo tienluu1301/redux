@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import projectAPI from '../../services/projectAPI'
+// import anothersAPI from '../../services/anothersAPI'
 
 const initialState = {
     projects: null,
@@ -25,6 +26,13 @@ export const getProjectDetail = createAsyncThunk(
     async (id) => {
         try {
             const data = await projectAPI.getProjectDetail(id)
+
+            data.lstTask = data.lstTask.reduce((result, task) => {
+                return {
+                    ...result,
+                    [task.statusId]: { ...task }
+                }
+            }, {})
             return data
         } catch (error) {
             throw error

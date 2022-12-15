@@ -28,6 +28,7 @@ const userAPI = {
     },
 
     getUsers: (keyword) => {
+        if (!keyword) keyword = null
         return fetcher("/Users/getUser", {
             params: {
                 keyword

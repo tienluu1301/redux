@@ -1,5 +1,6 @@
 .wrapper {
     padding: 0 40px;
+    position: relative;
 }
 
 .title {
@@ -7,12 +8,6 @@
     justify-content: space-between;
     align-items: center;
     margin: 16px 0;
-}
-
-.control {
-    display: flex;
-    align-items: center;
-    gap: 20px;
 }
 
 .filter {

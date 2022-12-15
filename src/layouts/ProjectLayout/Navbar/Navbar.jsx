@@ -8,7 +8,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import ContactSupportOutlinedIcon from '@mui/icons-material/ContactSupportOutlined';
 
-import SubNavbar from '../SubNavbar'
+// import SubNavbar from '../SubNavbar'
 import { Avatar } from '../../../components/Avatar'
 import { JiraLogoWhite } from '../../../components/SVG'
 import { useSelector } from 'react-redux'
@@ -16,7 +16,6 @@ const cx = classnames.bind(styles)
 
 const Navbar = () => {
     const { user } = useSelector(state => state.auth)
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('mainNav')}>
@@ -25,7 +24,7 @@ const Navbar = () => {
                 </Link>
                 <ul className={cx('mainNavList')}>
                     <li className={cx('mainNavItem')}>
-                        <Tippy content='Search issues' placement='right-end'>
+                        <Tippy content='Search issues' placement='right'>
                             <button>
                                 <SearchOutlinedIcon fontSize='inherit' color='inherit' />
                             </button>
@@ -41,7 +40,7 @@ const Navbar = () => {
                 </ul>
                 <ul className={cx('mainNavList', 'bottom')}>
                     <li className={cx('mainNavItem')}>
-                        <Tippy content={user?.name || 'anonymous'} placement='right-end'>
+                        <Tippy content={user?.name || 'anonymous'} placement='right'>
                             <button>
                                 <Avatar src={user?.avatar} status='online' variant='circle' />
                             </button>
@@ -56,7 +55,7 @@ const Navbar = () => {
                     </li>
                 </ul>
             </div>
-            <SubNavbar />
+            {/* <SubNavbar /> */}
         </div>
     )
 }

@@ -1,33 +1,49 @@
 import PropTypes from 'prop-types';
-import ModalMUI from '@mui/material/Modal';
+// import ModalMUI from '@mui/material/Modal';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+// import Zoom from '@mui/material/Zoom'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import classNames from 'classnames/bind';
 import styles from './Modal.module.scss'
+const cx = classNames.bind(styles)
 
 
 const Modal = ({ open, onClose, title, footer, children }) => {
     return (
-        <ModalMUI
+        <Dialog
             open={open}
             onClose={onClose}
+            scroll="body"
+        // keepMounted
+        // hideBackdrop
+        // closeAfterTransition
+        // disableScrollLock
         >
-            <div className={styles.wrapper}>
-                <header className={styles.header}>
+            <DialogTitle>
+                <header className={cx("header")}>
                     <h3>{title}</h3>
                     <button
                         onClick={onClose}
-                        className={styles.closeBtn}
+                        className={cx("closeBtn")}
                     >
                         <CloseOutlinedIcon fontSize='inherit' color='inherit' />
                     </button>
                 </header>
-                <div className={styles.body}>
+            </DialogTitle>
+            <DialogContent>
+                <div className={cx("body")}>
                     {children}
                 </div>
-                <div className={styles.footer}>
+            </DialogContent>
+            <DialogActions>
+                <div className={cx("footer")}>
                     {footer}
                 </div>
-            </div>
-        </ModalMUI>
+            </DialogActions>
+        </Dialog>
     );
 }
 
@@ -35,6 +51,7 @@ Modal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     title: PropTypes.string,
+    custom: PropTypes.bool,
     footer: PropTypes.node,
     children: PropTypes.node
 }
