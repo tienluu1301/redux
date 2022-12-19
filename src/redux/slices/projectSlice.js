@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 import projectAPI from '../../services/projectAPI'
 // import anothersAPI from '../../services/anothersAPI'
 
@@ -43,6 +43,41 @@ export const getProjectDetail = createAsyncThunk(
 const projectSlice = createSlice({
     name: 'projects',
     initialState,
+    reducers: {
+        reOrderTask: (state, action) => {
+            const currentState = JSON.parse(JSON.stringify(current(state)))
+
+            const { source, destination } = action.payload
+
+            //Lấy cột tương ứng cho nơi drag và nơi drop
+            const sourceCol = currentState.selectedProject.lstTask[source.droppableId]
+            const destinationCol = currentState.selectedProject.lstTask[destination.droppableId]
+
+            //Lấy ra danh dách task tương ứng cho các cột
+            let sourceTasks = [...sourceCol.lstTaskDeTail]
+            let destinationTasks = [...destinationCol.lstTaskDeTail]
+
+            // Nếu cùng 1 cột thì cho 2 danh sách cùng giá trị referrence
+            if (source.droppableId === destination.droppableId) {
+                destinationTasks = sourceTasks
+            }
+
+            // Cắt và lấy task đã cắt gắn vào cột tương ứng
+            const [task] = sourceTasks.splice(source.index, 1)
+            destinationTasks.splice(destination.index, 0, task)
+
+            let newSelectedProject = { ...currentState.selectedProject }
+
+            // Thay đổi danh sách các cột tương ứng bằng danh sách mới
+            newSelectedProject.lstTask[source.droppableId].lstTaskDeTail = sourceTasks
+            newSelectedProject.lstTask[destination.droppableId].lstTaskDeTail = destinationTasks
+
+            return {
+                ...state,
+                selectedProject: newSelectedProject
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(getProjects.pending, (state, action) => {
             return {
@@ -93,5 +128,5 @@ const projectSlice = createSlice({
         })
     }
 })
-
+export const { reOrderTask } = projectSlice.actions
 export default projectSlice.reducer

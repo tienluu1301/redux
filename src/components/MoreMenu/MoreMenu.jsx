@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Tippy from '@tippyjs/react/headless';
 
 import styles from './Menu.module.scss'
@@ -8,9 +8,10 @@ import Popper from '../Popper/Popper';
 import MenuItem from './MenuItem';
 import MenuHeader from './MenuHeader';
 
-const cx = classNames.bind(classNames)
+const cx = classNames.bind(styles)
 
 const MoreMenu = ({ children, items = [], trigger = 'click', onChange = () => { }, placement = 'bottom', rootClass = '', rootActiveClass = '', ...passProp }) => {
+    const isFisrtRender = useRef(true)
     const [active, setActive] = useState(false)
     const [history, sethistory] = useState([{ data: items }])
     const current = history[history.length - 1]
@@ -31,50 +32,58 @@ const MoreMenu = ({ children, items = [], trigger = 'click', onChange = () => { 
     const handleReset = () => {
         sethistory(prev => prev.slice(0, 1))
     }
-
+    useEffect(() => {
+        if (isFisrtRender) {
+            isFisrtRender.current = false
+            return
+        }
+        sethistory([{ data: items }])
+    }, [items])
     return (
-        <Tippy
-            interactive
-            trigger={trigger}
-            placement={placement}
-            delay={[null, 200]}
-            onHide={handleReset}
-            onTrigger={() => setActive(true)}
-            onHidden={() => setActive(false)}
-            render={attrs => (
+        <div className={cx('tippyWrapper')}>
+            <Tippy
+                interactive
+                trigger={trigger}
+                placement={placement}
+                delay={[null, 200]}
+                onHide={handleReset}
+                onTrigger={() => setActive(true)}
+                onHidden={() => setActive(false)}
+                render={attrs => (
+                    <div
+                        className={cx("wrapper")}
+                        tabIndex="-1" {...attrs}
+                        onClick={(evt) => {
+                            evt.stopPropagation()
+                        }}
+                    >
+                        <Popper>
+                            {history.length > 1 &&
+                                <MenuHeader title={current.title} onBack={handleBack} />}
+                            {current.data.map((item, index) => (
+                                <MenuItem
+                                    key={index}
+                                    item={item}
+                                    onClick={() => handleClick(item)} />
+                            ))}
+                        </Popper>
+                    </div>
+                )}
+                {...passProp}
+            >
                 <div
-                    className={cx("wrapper")}
-                    tabIndex="-1" {...attrs}
+                    className={cx("menu", {
+                        [rootClass]: rootClass,
+                        [rootActiveClass]: active
+                    })}
                     onClick={(evt) => {
                         evt.stopPropagation()
                     }}
                 >
-                    <Popper>
-                        {history.length > 1 &&
-                            <MenuHeader title={current.title} onBack={handleBack} />}
-                        {current.data.map((item, index) => (
-                            <MenuItem
-                                key={index}
-                                item={item}
-                                onClick={() => handleClick(item)} />
-                        ))}
-                    </Popper>
+                    {children}
                 </div>
-            )}
-            {...passProp}
-        >
-            <div
-                className={cx("menu", {
-                    [rootClass]: rootClass,
-                    [rootActiveClass]: active
-                })}
-                onClick={(evt) => {
-                    evt.stopPropagation()
-                }}
-            >
-                {children}
-            </div>
-        </Tippy>
+            </Tippy>
+        </div>
     )
 }
 

@@ -1,27 +1,6 @@
 .taskList {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    // gap: 8px;
     padding-bottom: 8px;
-}
-
-.createTaskBtn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    height: 36px;
-    margin: 2px 0;
-    padding: 0px 10px;
-    border-radius: 3px;
-    color: var(--text-color);
-    cursor: pointer;
-    font-weight: 500;
-
-    .addIcon {
-        font-size: 2rem;
-    }
-
-    &:hover {
-        background-color: rgba(9, 30, 66, 0.08);
-    }
 }

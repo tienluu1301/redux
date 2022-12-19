@@ -15,7 +15,7 @@ const TextField = forwardRef(({
     className,
     inputClass,
     autoHeight,
-    value,
+    value = '',
     error,
     readOnly = false,
     disabled = false,
@@ -37,7 +37,9 @@ const TextField = forwardRef(({
     useEffect(() => {
         if (!autoHeight) return
         // Xử lý textarea có thể autoheight mà không bị scroll dọc
-        myRef.current.addEventListener('input', autoResize);
+
+        const localRef = myRef.current
+        localRef.addEventListener('input', autoResize);
 
         function autoResize() {
             this.style.height = 'auto';
@@ -45,7 +47,7 @@ const TextField = forwardRef(({
         }
 
         return () => {
-            // myRef.current.removeEventListener('input', autoResize)
+            localRef.removeEventListener('input', autoResize)
         }
     }, [])
 
@@ -59,6 +61,9 @@ const TextField = forwardRef(({
         },
         getValue: () => {
             return inputValue
+        },
+        getInputNode: () => {
+            return myRef.current
         }
     }
     useImperativeHandle(ref, () => inputMethod)
@@ -69,7 +74,12 @@ const TextField = forwardRef(({
 
     const handleOnChange = (evt) => {
         setInputValue(evt.target.value)
-        onChange(inputValue, inputMethod)
+        console.log(evt.target.value)
+
+        setTimeout(() => {
+            // giúp cho method getValue luôn lấy được giá trị mới nhất
+            onChange(evt.target.value, inputMethod)
+        }, 0)
     }
 
     return (
@@ -94,14 +104,7 @@ const TextField = forwardRef(({
                 disabled={disabled}
                 value={inputValue}
                 {...passProp}
-                ref={(node) => {
-                    myRef.current = node;
-                    if (typeof ref === 'function') {
-                        ref(node);
-                    } else if (ref) {
-                        ref.current = node;
-                    }
-                }}
+                ref={myRef}
                 id={id}
             />
             {label && <label htmlFor={id}>{label}</label>}

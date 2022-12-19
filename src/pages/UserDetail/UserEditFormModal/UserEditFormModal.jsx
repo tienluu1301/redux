@@ -9,8 +9,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 import TextField from '../../../components/TextField';
-// import StyledSelect from '../../../components/Select';
-// import avatarDefault from '../../../assets/images/avatar-default.png'
 
 import { getUsersDetail } from '../../../redux/slices/userSlice'
 import useRequest from '../../../hooks/useRequest'

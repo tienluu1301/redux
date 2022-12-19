@@ -51,41 +51,6 @@ const UserDetail = () => {
         return <CustomErrorOverLay />
     }
 
-    // const columns = [
-    //     {
-    //         field: "maVe",
-    //         headerName: "Ticket ID",
-    //         flex: 1,
-    //         minWidth: 120
-    //     },
-    //     {
-    //         field: "tenPhim",
-    //         headerName: "Movie Name",
-    //         flex: 2,
-    //         minWidth: 260
-    //     },
-    //     {
-    //         field: "thoiLuongPhim",
-    //         headerName: "Range",
-    //         flex: 1,
-    //         minWidth: 80,
-    //         valueGetter: (params) => params.row.thoiLuongPhim + "'"
-    //     },
-    //     {
-    //         field: "giaVe",
-    //         headerName: "Price",
-    //         valueGetter: (params) => params.row?.giaVe?.toLocaleString("vn-VN") + ' VND',
-    //         flex: 1,
-    //         minWidth: 150
-    //     },
-    //     {
-    //         field: "ngayDat",
-    //         headerName: "Booking day",
-    //         flex: 2,
-    //         minWidth: 240
-    //     }
-    // ];
-
     return (
         <div className={styles.wrapper}>
             {/******** User information /********/}

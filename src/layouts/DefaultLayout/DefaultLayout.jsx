@@ -12,18 +12,9 @@ const DefaultLayout = () => {
     return (
         <div className={cx('wrapper')}>
             <Header />
-            <Outlet />
-            {/* <div className={cx('left')}>
-                <Navbar />
+            <div className={cx('content')}>
+                <Outlet />
             </div>
-            <div className={cx('right')}>
-                <div className={cx('rightTop')}>
-                    <Breadcrumbs />
-                </div>
-                <div className={cx('content')}>
-                    <Outlet />
-                </div>
-            </div> */}
         </div>
     )
 }

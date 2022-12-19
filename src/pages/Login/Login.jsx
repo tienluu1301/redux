@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { Link, useLocation, Navigate } from 'react-router-dom'
+import { Link, useLocation, Navigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -22,6 +22,7 @@ const Login = () => {
         }
     })
     const dispatch = useDispatch()
+    const [searchParams, setSearchParams] = useSearchParams()
     const { user, loading, error } = useSelector((state) => state.auth)
     const location = useLocation()
 
@@ -44,7 +45,8 @@ const Login = () => {
     }
 
     if (user) {
-        return <Navigate to='/jira' />
+        const redirectUrl = searchParams.get('redirectUrl')
+        return <Navigate to={redirectUrl || '/jira'} replace />
     }
 
     return (

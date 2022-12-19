@@ -1,13 +1,22 @@
 .wrapper {
     position: relative;
-    padding: 0 40px;
+    // dùng flex để cho height phần tử con chiếm hết phần chiều cao còn lại của parent
+    display: flex;
+    flex-direction: column;
+    margin: 0 40px;
+
+    @media (max-width:576px) {
+        & {
+            margin: 0 16px;
+        }
+    }
 }
 
 .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 16px 0;
+    padding: 16px 0;
 }
 
 .filter {
@@ -29,6 +38,12 @@
         border-radius: 50%;
         background-color: #ccc;
     }
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 // .container {

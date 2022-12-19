@@ -1,0 +1,80 @@
+.wrapper {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 32px;
+    padding: 10px 5px 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+}
+
+
+.member {
+    display: flex;
+    align-items: center;
+    // gap: 15px;
+    background-color: var(--bg-light-color);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    padding: 2px 4px;
+    margin: 0 15px 5px 0;
+    font-size: 2rem;
+    color: var(--title-color);
+
+    span {
+        font-size: 1.4rem;
+        padding: 0 3px 0 6px;
+        line-height: 1.2;
+    }
+
+    .removeMemberBtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        cursor: pointer;
+    }
+}
+
+
+.assignment {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+
+    &.alreadySelect {
+        display: none;
+    }
+}
+
+.assignmentBtnWrapper {
+    padding: 0;
+    min-height: fit-content;
+
+    &[class~=selecting] {
+        outline: 2px solid #4C9AFF;
+        background-color: var(--white-color);
+    }
+}
+
+
+.assignmentBtn {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+
+    span {
+        font-size: 1.3rem;
+    }
+
+    &:hover {
+        span {
+            text-decoration: underline;
+        }
+    }
+}

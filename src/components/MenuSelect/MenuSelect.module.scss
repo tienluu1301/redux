@@ -1,9 +1,28 @@
+.tippyWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+
+    &>* {
+        flex: 1
+    }
+
+    &>[data-tippy-root] {
+        min-width: 100% !important;
+    }
+
+    label {
+        font-size: 1.6rem;
+        color: var(--text-light-color);
+    }
+}
+
 .wrapper {
     // background-color: #ccc;
-    min-width: 220px;
     max-height: 20vh;
-
-
+    min-width: 200px;
 }
 
 .search {
@@ -26,14 +45,6 @@
     &:hover {
         background-color: var(--bg-dark-color);
         box-shadow: inset 2px 0px 0px var(--ds-border-selected, #0052CC)
-    }
-}
-
-.container {
-    label {
-        font-size: 1.6rem;
-        color: var(--text-light-color);
-        margin-bottom: 4px;
     }
 }
 

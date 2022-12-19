@@ -1,66 +1,96 @@
-import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react'
+import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
-import { useForm } from 'react-hook-form';
 
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
 
 
-// import useRequest from '../../../hooks/useRequest'
+
 import projectAPI from '../../../services/projectAPI'
 import anothersAPI from '../../../services/anothersAPI'
-import { toggleTaskModal, getTaskById } from '../../../redux/slices/taskSlice'
 
 import { getProjectDetail } from '../../../redux/slices/projectSlice'
-
 import { taskTypeMap, priorityMap } from '../dummyData'
 
 import Button from '../../../components/Button';
 import MenuSelect from '../../../components/MenuSelect';
 import MyCkEditor from '../../../components/MyCkEditor';
-import TextField from '../../../components/TextField';
-
-import { Avatar } from '@mui/material';
+import { TextFieldV2 as TextField } from '../../../components/TextField';
 
 import classnames from 'classnames/bind'
 import styles from './TaskNewModal.module.scss'
+import MultiSelectUser from './MultiSelectUser';
+import { useParams } from 'react-router-dom';
+import TimeTracking from '../../component/TimeTracking/TimeTracking';
 const cx = classnames.bind(styles)
 
 
-
-const FakeEditor = ({ value, ...passProps }) => {
-    const ref = useRef()
-    useEffect(() => {
-        ref.current.innerHTML = value
-    }, [value])
-    return <div ref={ref} {...passProps}></div>
-}
-
-
 const TaskNewModal = forwardRef((_, ref) => {
-    const dispatch = useDispatch()
+    const { projectId } = useParams()
     const [isOpen, setIsOpen] = useState(false)
+
+    const dispatch = useDispatch()
+    //dùng để xử lý UI
+    const timeTrackingRef = useRef()
+
+    //Dùng để lấy form value
+    const taskTypeRef = useRef()
+    const taskPriorityRef = useRef()
+    const taskNameRef = useRef()
     const descriptionRef = useRef()
-
-    // const { task, isTaskModalOpen } = useSelector(state => state.task)
-    const { selectedProject } = useSelector(state => state.project)
-    const { user } = useSelector(state => state.auth)
-
+    const taskStatusRef = useRef()
+    const taskAssignmentRef = useRef()
+    const orinalEstimateRef = useRef()
+    const timeRemaningRef = useRef()
+    const timeSpendingRef = useRef()
 
     const modalMethod = {
         toggleModal: (boolean) => {
             setIsOpen(boolean)
         }
     }
+
     useImperativeHandle(ref, () => modalMethod)
 
+    const handleCreateTask = async () => {
+        try {
+            const data = {
+                "listUserAsign": taskAssignmentRef.current.getValue().map(item => item.userId),
+                "taskName": taskNameRef.current.getValue(),
+                "description": descriptionRef.current.getData(),
+                "statusId": taskStatusRef.current.getValue()?.statusId,
+                "originalEstimate": orinalEstimateRef.current.getValue(),
+                "timeTrackingSpent": timeSpendingRef.current.getValue(),
+                "timeTrackingRemaining": timeRemaningRef.current.getValue(),
+                "projectId": projectId,
+                "typeId": taskTypeRef.current.getValue()?.id,
+                "priorityId": taskPriorityRef.current.getValue()?.priorityId
+            }
 
+            await projectAPI.createTask(data)
+            toast.success("Create task success")
+            dispatch(getProjectDetail(projectId))
+            setIsOpen(false)
+
+        } catch (error) {
+            toast.error(error)
+        }
+    }
+
+    // const handleResetForm = () => {
+    //     taskTypeRef.current.setValue()
+    //     taskPriorityRef.current.setValue()
+    //     taskNameRef.current.setValue()
+    //     descriptionRef.current.setData()
+    //     taskStatusRef.current.setValue()
+    //     taskAssignmentRef.current.setValue([])
+    //     orinalEstimateRef.current.setValue(0)
+    //     timeRemaningRef.current.setValue(0)
+    //     timeSpendingRef.current.setValue(0)
+    // }
 
     return (
         <Dialog
@@ -97,15 +127,14 @@ const TaskNewModal = forwardRef((_, ref) => {
                                 </span>
                             </div>
                         )}
-                        placement='bottom-start'
                         getSearchKey={(item) => item.taskType}
                         getItemsKey={(item) => item.id}
                         label='Task type'
                         selectPlaceHolder={"Select Task Type"}
+                        ref={taskTypeRef}
                     />
                     <MenuSelect
                         serviceAPI={anothersAPI.getPriorities}
-                        // value={task?.priorityTask}
                         renderItem={(item) => (
                             <div className={cx('taskPriority')}>
                                 {priorityMap[item.priorityId]?.icon}
@@ -115,17 +144,8 @@ const TaskNewModal = forwardRef((_, ref) => {
                         getSearchKey={(item) => item.description}
                         getItemsKey={(item) => item.priorityId}
                         selectPlaceHolder={"Select Status"}
-                        // onChange={handleChangePriority}
                         label='Priority'
-                    />
-                    <TextField
-                        inputClass={cx('taskName')}
-                        label='Short summary'
-                        variant='trello'
-                    />
-                    <MyCkEditor
-                        label='Description'
-                        editorRef={descriptionRef}
+                        ref={taskPriorityRef}
                     />
                     <MenuSelect
                         serviceAPI={anothersAPI.getTaskStatus}
@@ -134,68 +154,59 @@ const TaskNewModal = forwardRef((_, ref) => {
                                 {item.statusName}
                             </div>
                         )}
-                        maxRender={1}
                         label='Status'
                         getSearchKey={(item) => item.statusName}
                         getItemsKey={(item) => item.statusId}
-                        // onChange={handleChangeStatus}
                         selectPlaceHolder={"Select Status"}
                         arrow
+                        ref={taskStatusRef}
                     />
+                    <TextField
+                        inputClass={cx('taskName')}
+                        label='Short summary'
+                        variant='trello'
+                        ref={taskNameRef}
+                    />
+                    <MyCkEditor
+                        label='Description'
+                        editorRef={descriptionRef}
+                    />
+                    <MultiSelectUser ref={taskAssignmentRef} />
                     <div className={cx('formGroup')}>
-                        <h4>ASSIGNMENT</h4>
-                        <div className={cx('memberWrapper')}>
-                            {/* {task?.assigness.map(item => (
-                                <div className={cx('member')} key={item.id}>
-                                    <Avatar src={item.avatar} sx={{ width: 24, height: 24 }} />
-                                    <span>{item.name}</span>
-                                    <button
-                                        className={cx('removeMemberBtn')}
-                                    // onClick={() => handleRemoveUser(item.id)}
-                                    >
-                                        <ClearIcon fontSize='inherit' color='inherit' />
-                                    </button>
-                                </div>
-                            ))} */}
-                            <MenuSelect
-                                // onChange={handleAddUser}
-                                renderItem={(item) => (
-                                    <div className={cx('assignment')}>
-                                        <Avatar src={item.avatar} sx={{ width: 24, height: 24 }} />
-                                        <span>
-                                            {item.name}
-                                        </span>
-                                    </div>
-                                )}
-                                getSearchKey={(item) => item.name}
-                                getItemsKey={(item) => item.userId}
-                                items={selectedProject?.members || []}
-                                rootClass={cx('assignmentBtnWrapper')}
-                                defaultPlaceHolder={(
-                                    <div className={cx('assignmentBtn')}>
-                                        <AddOutlinedIcon fontSize='inherit' color='inherit' />
-                                        <span>Add User</span>
-                                    </div>
-                                )}
-                            />
-                        </div>
-                    </div>
-                    <div className={cx('formGroup')}>
-                        <h4>ORIGINAL ESTIMATE (HOURS)</h4>
                         <TextField
                             variant='trello'
-                        // onBlur={handleChangeEstimate}
+                            label='Original estiamte (hours)'
+                            type='number'
+                            value={0}
+                            ref={orinalEstimateRef}
                         />
+                        <TimeTracking ref={timeTrackingRef} />
                     </div>
                     <div className={cx('formGroup')}>
-                        <h4>TIME TRACKING</h4>
-                        <MenuSelect
-                            renderItem={() => 'dsad'}
-                            items={[]}
-                            title={"unassign"}
+                        <TextField
+                            variant='trello'
+                            label='Time remaining (hours)'
+                            value={0}
+                            type='number'
+                            ref={timeRemaningRef}
+                            onChange={(value) => { timeTrackingRef.current.setTimeRemaining(value) }}
+                        />
+                        <TextField
+                            variant='trello'
+                            label='Time spend (hours)'
+                            value={0}
+                            type='number'
+                            ref={timeSpendingRef}
+                            onChange={(value) => { timeTrackingRef.current.setTimeSpending(value) }}
                         />
                     </div>
                 </section>
+                <footer className={cx('footer')}>
+                    <div className={cx('confirmBtnGroup')}>
+                        <Button solid primary onClick={handleCreateTask}>Create task</Button>
+                        <Button solid onClick={() => setIsOpen(false)}>Cancle</Button>
+                    </div>
+                </footer>
             </DialogContent>
         </Dialog>
     )

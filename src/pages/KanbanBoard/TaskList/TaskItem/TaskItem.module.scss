@@ -3,7 +3,7 @@
     padding: 10px;
     border-radius: 2px;
     box-shadow: var(--ds-shadow-raised, 0 1px 1px rgba(23, 43, 77, 0.2), 0 0 1px rgba(23, 43, 77, 0.2));
-
+    margin-bottom: 8px;
     cursor: grab;
     user-select: none;
 
@@ -19,12 +19,15 @@
         padding-bottom: 12px;
     }
 
+    &.dragging {
+        // transform: rotate(10deg);
+    }
 
 }
 
 .title {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 }
 

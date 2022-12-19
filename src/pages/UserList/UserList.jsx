@@ -5,7 +5,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import styles from './UserList.module.scss'
-import Button from '../../components/Button'
 import MoreMenu from '../../components/MoreMenu'
 import SearchBar from '../../components/SearchBar'
 import TableData from '../../components/TableData'
@@ -37,11 +36,12 @@ const UserList = () => {
 
     useEffect(() => {
         dispatch(getUsers(searchValue))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleCreateNewUser = async (value, formMethod) => {
         try {
-            const createdUser = await createUser.runAsync(value)
+            await createUser.runAsync(value)
             toast.success("Create user successful")
             formMethod.reset()
         } catch (error) {

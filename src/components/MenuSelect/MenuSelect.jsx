@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useState, useEffect, useRef } from 'react'
+import { forwardRef, useImperativeHandle, useState, useEffect } from 'react'
 
 import Tippy from '@tippyjs/react/headless';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -23,6 +23,7 @@ const MenuSelect = forwardRef(({
     renderItem = (item) => item,
     getItemsKey = (item) => item,
     onChange = () => { },
+    onBlur = () => { },
     getSearchKey = (item) => item,
     searchPlaceholder = 'Search',
     selectPlaceHolder,
@@ -30,7 +31,8 @@ const MenuSelect = forwardRef(({
     label,
     rootClass,
     arrow,
-    serviceAPI
+    serviceAPI,
+    hideOnSelect = true
 },
     ref
 ) => {
@@ -40,8 +42,6 @@ const MenuSelect = forwardRef(({
     const [maximum, setMaximum] = useState(maxRender)
     const [searchInput, setSearchInput] = useState("")
     const [selectedItem, setSelectedItem] = useUpdateValue(value)
-    // const [selectedItem, setSelectedItem] = useState(value)
-    // const searchRegex = new RegExp(searchInput, "g")
 
     if (API.data) {
         options = API.data
@@ -70,13 +70,19 @@ const MenuSelect = forwardRef(({
         getValue: () => {
             return selectedItem
         },
-        toggleSelect: () => {
-            setVisible(false)
-        }
+        toggleSelect: (boolean) => {
+            setVisible(prev => boolean ?? !prev)
+        },
+        stateSelect: !visible
     }
 
     const handleSelect = (item) => {
-        onChange(item, selectMethod)
+        setTimeout(() => {
+            // giúp cho method getValue luôn lấy được giá trị mới nhất khi dùng với ref
+            onChange(item, selectMethod)
+        }, 0)
+        if (!hideOnSelect) return
+        setVisible(false)
         setSelectedItem(item)
     }
 
@@ -89,30 +95,27 @@ const MenuSelect = forwardRef(({
         return selectMethod
     })
 
-    // Tự động set lại giá trị khởi tạo nếu giá trị khởi tạo đầu vào thay đổi
-    // (dùng khi call API đợi dữ liệu để set giá trị,...)
-    useEffect(() => {
-        setSelectedItem(value)
-    }, [value])
-
-
     useEffect(() => {
         if (!serviceAPI) return
         if (options.length > 0) return
+
         API.run()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
     console.log("render Menu")
     return (
-        <div>
+        <div className={cx('tippyWrapper')}>
+            {label ? <label htmlFor="">{label}</label> : null}
             <Tippy
                 visible={visible}
                 interactive
-                // trigger={trigger}
                 placement={placement}
                 delay={[null, 200]}
                 onClickOutside={() => {
                     setVisible(false)
                     setMaximum(maxRender)
+                    setSearchInput("")
                 }}
                 render={attrs => (
                     <div
@@ -130,6 +133,7 @@ const MenuSelect = forwardRef(({
                                 />
                             </div>
                             <div className={cx('list')}>
+                                {API.loading ? "Loading" : null}
                                 <div className={cx('listWrapper')}>
                                     {filterItem.length > 0 ?
                                         filterItem.map((item, index) => (
@@ -156,30 +160,27 @@ const MenuSelect = forwardRef(({
                     </div>
                 )}
             >
-                <div className={cx('container')}>
-                    <label htmlFor="">{label}</label>
-                    <div
-                        className={cx('titleWrapper', {
-                            selecting: visible,
-                            [rootClass]: rootClass
-                        })}
-                        onClick={() => setVisible(true)}
-                    >
-                        <div className={cx('title')}>
-                            {defaultPlaceHolder ?
-                                defaultPlaceHolder :
-                                selectedItem ?
-                                    renderItem(selectedItem) :
-                                    selectPlaceHolder
-                            }
-                        </div>
-                        {arrow ?
-                            <div className={cx('titleIcon')}>
-                                <ExpandMoreIcon color='inherit' fontSize='inherit' />
-                            </div> : null
+                <div
+                    className={cx('titleWrapper', {
+                        selecting: visible,
+                        [rootClass]: rootClass
+                    })}
+                    onClick={() => setVisible(true)}
+                >
+                    <div className={cx('title')}>
+                        {defaultPlaceHolder ?
+                            defaultPlaceHolder :
+                            selectedItem ?
+                                renderItem(selectedItem) :
+                                selectPlaceHolder
                         }
-
                     </div>
+                    {arrow ?
+                        <div className={cx('titleIcon')}>
+                            <ExpandMoreIcon color='inherit' fontSize='inherit' />
+                        </div> : null
+                    }
+
                 </div>
             </Tippy>
         </div>

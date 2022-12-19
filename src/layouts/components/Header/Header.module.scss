@@ -65,6 +65,7 @@
 .link {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 32px;
     padding: 0 4px;
     border-radius: 4px;
@@ -88,4 +89,52 @@
 .avatarWrapper {
     width: 24px;
     height: 24px;
+}
+
+@media (max-width:768px) {
+    // .githubBtn {
+    //     position: fixed;
+    //     bottom: 50px;
+    //     right: 20px;
+    // }
+}
+
+@media (max-width:576px) {
+    .navigation {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: auto;
+        background-color: var(--white-color);
+        border-top: 1px solid var(--border-color);
+        // &::after {
+        //     background: linear-gradient(rgba(9, 30, 66, 0.13) 0px, rgba(9, 30, 66, 0.13) 1px, rgba(9, 30, 66, 0.08) 1px, rgba(9, 30, 66, 0) 4px);
+        // }
+    }
+
+    .list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .item {
+        flex: 1;
+
+        &:has(.link.active)::after {
+            // height: 5px;
+            top: 0px;
+            border-top-left-radius: unset;
+            border-top-right-radius: unset;
+            border-bottom-left-radius: 1px;
+            border-bottom-right-radius: 1px;
+        }
+
+    }
+
+    .link {
+        height: 40px;
+        width: 100%;
+    }
 }

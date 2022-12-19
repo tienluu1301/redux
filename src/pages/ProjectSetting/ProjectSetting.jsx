@@ -17,21 +17,18 @@ import Button from '../../components/Button/Button'
 import { toast } from 'react-toastify'
 import MyCkEditor from '../../components/MyCkEditor/MyCkEditor'
 import MenuSelect from '../../components/MenuSelect'
-
 const cx = classnames.bind(styles)
 
 const ProjectSetting = () => {
     const { selectedProject } = useSelector(state => state.project)
     const dispatch = useDispatch()
 
-    // const getCategory = useRequest(anothersAPI.getProjectCategories)
     const updateProject = useRequest(projectAPI.updateProject, { manual: true })
     const { handleSubmit, register, formState: { errors }, setValue } = useForm({
         defaultValues: {
             creator: "",
             id: "",
             projectName: "",
-            // categoryId: "",
         }
     })
 

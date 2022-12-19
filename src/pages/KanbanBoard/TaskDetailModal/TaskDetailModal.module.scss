@@ -2,6 +2,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width:576px) {
+        & {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+    }
 }
 
 .taskType {
@@ -20,11 +27,23 @@
 
 .headerLeft {
     max-width: 200px;
+
+    @media (max-width:576px) {
+        & {
+            order: 1;
+        }
+    }
 }
 
 .headerRight {
     display: flex;
     gap: 8px;
+
+    @media (max-width:576px) {
+        & {
+            width: 100%;
+        }
+    }
 }
 
 .headerBtn {
@@ -43,26 +62,52 @@
     &:hover {
         background-color: var(--bg-dark-color);
     }
+
 }
+
+.deleteTaskBtn {
+    margin-left: auto;
+}
+
 
 .body {
     display: flex;
     gap: 50px;
+
+    @media (max-width:768px) {
+        & {
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+    }
 }
 
 .left {
     width: 64%;
+
+    @media (max-width:768px) {
+        & {
+            width: 100%;
+        }
+    }
 }
 
 .right {
     flex: 1;
+
+    @media (max-width:768px) {
+        & {
+            width: 100%;
+        }
+    }
 }
 
 .formGroup {
     h4 {
         font-size: 1.3rem;
         color: var(--title-color);
-        padding: 24px 0 6px;
+        // padding: 24px 0 6px;
+        padding: 24px 0 4px;
     }
 }
 
@@ -72,7 +117,7 @@
     .taskName {
         font-size: 2.4rem;
         color: var(--text-color);
-        font-weight: 600;
+        font-weight: 400;
         height: auto;
         resize: none;
         overflow-y: hidden;
@@ -81,6 +126,10 @@
 
         &:hover {
             background-color: var(--bg-dark-color);
+        }
+
+        ::placeholder {
+            color: rgba(0, 0, 0, 0.87);
         }
     }
 }
@@ -97,18 +146,143 @@
 }
 
 .editor {
-    display: none;
-    min-height: 30px;
 
-    &.visible {
-        display: block;
+    :global {
+
+        .ck.ck-sticky-panel__content {
+            display: none;
+        }
+
+        .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+            border: none
+        }
+
+        .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused):hover {
+            background-color: var(--bg-dark-color);
+        }
+
+        .ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected {
+            outline: none;
+        }
+
+        .ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button {
+            display: none;
+        }
     }
 
-    cursor: text;
+    &.visible {
+        cursor: text;
+
+        :global {
+            .ck.ck-sticky-panel__content {
+                display: block;
+            }
+
+            .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+                box-shadow: none;
+                border: 1px solid var(--border-color);
+            }
+
+            .ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
+                box-shadow: none;
+                border: 1px solid var(--border-color);
+                // border-top: none;
+            }
+
+        }
+    }
+
 
     &:hover {
         background-color: var(--bg-dark-color);
     }
+}
+
+.commentGroup {
+    margin-top: 40px;
+
+    h4 {
+        padding: 0;
+    }
+
+
+}
+
+.commentInputWrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.commentInputGroup {
+    flex: 1;
+
+    &.visible {
+        .commentInputControl {
+            display: flex;
+        }
+
+        .commentInputHelper {
+            display: none;
+        }
+
+        .commentInput {
+            min-height: 60px;
+        }
+    }
+
+    .commentInputRoot {
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+    }
+
+    .commentInput {
+        font-size: 1.5rem;
+        color: var(--text-color);
+        font-weight: 400;
+        padding: 12px 16px;
+        height: auto;
+        resize: none;
+        overflow-y: hidden;
+        border-color: transparent;
+        background-color: transparent;
+
+        &:hover {
+            background-color: var(--bg-dark-color);
+        }
+
+        ::placeholder {
+            color: rgba(0, 0, 0, 0.87);
+            font-weight: 500;
+        }
+    }
+}
+
+
+.commentInputHelper {
+    padding-top: 8px;
+    font-size: 1.3rem;
+
+    color: var(--text-color);
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.commentInputControl {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding-top: 10px;
+}
+
+.listComment {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .taskStatus {
@@ -156,11 +330,19 @@
     align-items: center;
     gap: 4px;
     padding: 4px 8px;
+    white-space: nowrap;
+}
+
+.alreadyExist {
+    display: none;
 }
 
 .assignmentBtnWrapper {
     background-color: transparent;
     width: fit-content;
+    border: none;
+    padding: 0;
+    height: auto;
 
     &:hover {
         background-color: transparent;
@@ -171,8 +353,13 @@
 .assignmentBtn {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 3px;
     color: var(--primary-color);
+    font-size: 1.5rem;
+
+    span {
+        font-size: 1.3rem;
+    }
 
     &:hover {
         span {

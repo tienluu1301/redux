@@ -59,31 +59,20 @@
 }
 
 .formGroup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    >* {
+        flex: 1;
+    }
+
     h4 {
         font-size: 1.3rem;
         color: var(--title-color);
         // padding: 24px 0 6px;
     }
 }
-
-// .titleWrapper {
-//     margin-top: 18px;
-
-//     .taskName {
-//         font-size: 2.4rem;
-//         color: var(--text-color);
-//         font-weight: 600;
-//         height: auto;
-//         resize: none;
-//         overflow-y: hidden;
-//         border-color: transparent;
-//         background-color: transparent;
-
-//         &:hover {
-//             background-color: var(--bg-dark-color);
-//         }
-//     }
-// }
 
 .taskStatus {
     padding: 4px 8px;
@@ -160,4 +149,16 @@
     align-items: center;
     gap: 12px;
     padding: 4px 8px;
+}
+
+.footer {
+    padding-top: 30px;
+    display: flex;
+}
+
+.confirmBtnGroup {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-left: auto;
 }

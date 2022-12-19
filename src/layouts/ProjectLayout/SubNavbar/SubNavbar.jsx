@@ -23,7 +23,12 @@ const cx = classnames.bind(styles)
 const SubNavbar = () => {
     const { selectedProject } = useSelector(state => state.project)
     const { projectId } = useParams()
-    const [expand, toggleExpand] = useToggle(true)
+    const [expand, toggleExpand] = useToggle(() => {
+        if (window.innerWidth < 768) {
+            return false
+        }
+        return true
+    })
 
     return (
         <div className={cx('wrapper', { expand })}>

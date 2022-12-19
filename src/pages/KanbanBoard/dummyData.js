@@ -5,11 +5,11 @@ import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined
 
 export const taskTypeMap = {
     1: {
-        icon: <BugReportIcon fontSize='inherit' color='inherit' />,
+        icon: <BugReportIcon fontSize='inherit' color='secondary' />,
         name: "Bug"
     },
     2: {
-        icon: <ListAltIcon fontSize='inherit' color='inherit' />,
+        icon: <ListAltIcon fontSize='inherit' color='success' />,
         name: "New Task"
     }
 }

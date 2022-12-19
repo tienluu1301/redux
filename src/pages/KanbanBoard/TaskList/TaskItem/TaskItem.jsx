@@ -12,6 +12,8 @@ import { getProjectDetail } from '../../../../redux/slices/projectSlice'
 import projectAPI from '../../../../services/projectAPI'
 import { taskTypeMap, priorityMap } from '../../dummyData'
 
+import { Draggable } from 'react-beautiful-dnd'
+
 
 import classnames from 'classnames/bind'
 import styles from './TaskItem.module.scss'
@@ -26,7 +28,7 @@ const itemsMenu = [
     }
 ]
 
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, index }) => {
     const { projectId } = useParams()
     const dispatch = useDispatch()
     console.log("taskItem render")
@@ -52,84 +54,94 @@ const TaskItem = ({ task }) => {
     }
 
     return (
-        <li className={cx('taskItem')} onClick={handleSelectTask}>
-            <div className={cx('title')}>
-                <h4>{task.taskName}</h4>
-                <MoreMenu
-                    items={itemsMenu}
-                    placement='bottom-end'
-                    appendTo={() => document.body}
-                    rootActiveClass={cx("taskMenuActive")}
-                    onChange={handleSelectMenu}
+        <Draggable draggableId={task.taskId.toString()} index={index}>
+            {(provider, snapshot) => (
+                <li
+                    {...provider.draggableProps}
+                    {...provider.dragHandleProps}
+                    ref={provider.innerRef}
+                    className={cx('taskItem', { dragging: snapshot.isDragging })}
+                    onClick={handleSelectTask}
                 >
-                    <button
-                        className={cx('taskActionBtn')}
-                    >
-                        <MoreHorizOutlinedIcon fontSize='inherit' color='inherit' />
-                    </button>
-                </MoreMenu>
-            </div>
-            <div className={cx('taskInfo')}>
-                <div className={cx('left')}>
-                    <AvatarGroup
-                        max={4}
-                        total={task.assigness.length}
-                        sx={{
-                            '& .MuiAvatar-root': { width: 24, height: 24, fontSize: 15 },
-                        }}
-                    >
-                        {task.assigness.map(item => (
-                            <Tooltip
-                                key={item.id}
-                                title={item.name}
-                                arrow
-                                PopperProps={{
-                                    sx: {
-                                        "& .MuiTooltip-tooltip": {
-                                            fontSize: "1rem"
-                                        }
-                                    }
+                    <div className={cx('title')}>
+                        <h4>{task.taskName}</h4>
+                        <MoreMenu
+                            items={itemsMenu}
+                            placement='bottom-end'
+                            appendTo={() => document.body}
+                            rootActiveClass={cx("taskMenuActive")}
+                            onChange={handleSelectMenu}
+                        >
+                            <button
+                                className={cx('taskActionBtn')}
+                            >
+                                <MoreHorizOutlinedIcon fontSize='inherit' color='inherit' />
+                            </button>
+                        </MoreMenu>
+                    </div>
+                    <div className={cx('taskInfo')}>
+                        <div className={cx('left')}>
+                            <AvatarGroup
+                                max={4}
+                                total={task.assigness.length}
+                                sx={{
+                                    '& .MuiAvatar-root': { width: 24, height: 24, fontSize: 15 },
                                 }}
                             >
-                                <Avatar src={item.avatar} alt={item.name} />
-                            </Tooltip>
-                        ))}
-                    </AvatarGroup>
-                </div>
-                <div className={cx('right')}>
-                    <div className={cx('taskType')}>
-                        <Tooltip
-                            title={taskTypeMap[task.taskTypeDetail.id].name}
-                            arrow
-                            PopperProps={{
-                                sx: {
-                                    "& .MuiTooltip-tooltip": {
-                                        fontSize: "1rem"
-                                    }
-                                }
-                            }}
-                        >
-                            {taskTypeMap[task.taskTypeDetail.id].icon}
-                        </Tooltip>
+                                {task.assigness.map(item => (
+                                    <Tooltip
+                                        key={item.id}
+                                        title={item.name}
+                                        arrow
+                                        PopperProps={{
+                                            sx: {
+                                                "& .MuiTooltip-tooltip": {
+                                                    fontSize: "1rem"
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        <Avatar src={item.avatar} alt={item.name} />
+                                    </Tooltip>
+                                ))}
+                            </AvatarGroup>
+                        </div>
+                        <div className={cx('right')}>
+                            <div className={cx('taskType')}>
+                                <Tooltip
+                                    title={taskTypeMap[task.taskTypeDetail.id].name}
+                                    arrow
+                                    PopperProps={{
+                                        sx: {
+                                            "& .MuiTooltip-tooltip": {
+                                                fontSize: "1rem"
+                                            }
+                                        }
+                                    }}
+                                >
+                                    {taskTypeMap[task.taskTypeDetail.id].icon}
+                                </Tooltip>
+                            </div>
+                            <div className={cx('taskPriority')}>
+                                <Tooltip
+                                    title={priorityMap[task.priorityTask.priorityId].name}
+                                    arrow
+                                    PopperProps={{
+                                        sx: {
+                                            "& .MuiTooltip-tooltip": {
+                                                fontSize: "1rem"
+                                            }
+                                        }
+                                    }}
+                                >
+                                    {priorityMap[task.priorityTask.priorityId].icon}
+                                </Tooltip>
+                            </div>
+                        </div>
                     </div>
-                    <div className={cx('taskPriority')}>
-                        <Tooltip
-                            title={priorityMap[task.priorityTask.priorityId].name}
-                            arrow
-                            PopperProps={{
-                                sx: {
-                                    "& .MuiTooltip-tooltip": {
-                                        fontSize: "1rem"
-                                    }
-                                }
-                            }}
-                        >
-                            {priorityMap[task.priorityTask.priorityId].icon}
-                        </Tooltip>
-                    </div>
-                </div>
-            </div>
-        </li>
+                </li>
+            )}
+        </Draggable>
     )
 }
 

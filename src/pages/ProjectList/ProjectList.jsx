@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import classnames from 'classnames/bind'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import styles from './ProjectList.module.scss'
-import Button from '../../components/Button'
+import MenuSelect from '../../components/MenuSelect'
 import MoreMenu from '../../components/MoreMenu'
 import SearchBar from '../../components/SearchBar'
 import TableData from '../../components/TableData'
@@ -17,7 +17,6 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
-import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import Tooltip from '@mui/material/Tooltip';
 
@@ -28,6 +27,22 @@ import projectAPI from '../../services/projectAPI'
 import { toast } from 'react-toastify'
 
 const cx = classnames.bind(styles)
+
+const StyledTooltip = ({ ...passProp }) => (
+    <Tooltip
+        arrow
+        PopperProps={{
+            sx: {
+                "& .MuiTooltip-tooltip": {
+                    fontSize: "1.2rem"
+                }
+            }
+        }}
+        disableInteractive
+        {...passProp}
+    />
+)
+
 
 const ProjectList = () => {
     const { projects, loading, error } = useSelector(state => state.project)
@@ -43,10 +58,10 @@ const ProjectList = () => {
     useEffect(() => {
         // if (projects) return
         dispatch(getProjects(searchValue))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleSearchParams = (debounceValue) => {
-        console.log("chua render ,a")
         dispatch(getProjects(debounceValue))
 
         // kiểm tra xem nếu input có giá trị thì mới set query params,
@@ -61,15 +76,19 @@ const ProjectList = () => {
     const handleCreateProject = async (values, formMethod) => {
         try {
             const createdProject = await createProject.runAsync(values)
+            await projectAPI.addUserToProject({
+                userId: createdProject.creator,
+                projectId: createdProject.id
+            })
+
             dispatch(getProjects(searchValue))
             formMethod.reset()
-            console.log(formMethod)
             toast.success(`Create project ${values.projectName} successful`)
         } catch (error) {
             toast.error(typeof error === 'string' ? error : JSON.stringify(error))
         }
     }
-    const handleSelect = (action, id) => {
+    const handleSelectOptions = (action, id) => {
         if (action === 'detail') {
             navigate(`/jira/projects/${id}/kanban-board`)
         }
@@ -88,6 +107,10 @@ const ProjectList = () => {
                     toast.error("Delete project success")
                 })
         }
+    }
+
+    const handleSelectUser = (item) => {
+        navigate(`/jira/users/${item.userId}`)
     }
 
     const actions = [
@@ -135,37 +158,59 @@ const ProjectList = () => {
             minWidth: 150,
             renderCell: (params) => {
                 return (
-                    <AvatarGroup
-                        max={4}
-                        total={params.value.lenght}
-                        sx={{
-                            '& .MuiAvatar-root': { width: 24, height: 24, fontSize: 15 },
-                        }}
-                    >
-                        {params.value?.map(item => (
-                            <Tooltip
-                                key={item.userId}
-                                title={item.name}
-                                arrow
-                                disableInteractive
-                                PopperProps={{
-                                    sx: {
-                                        "& .MuiTooltip-tooltip": {
-                                            fontSize: "1.2rem"
-                                        }
-                                    }
+                    <MenuSelect
+                        items={params.value}
+                        maxRender={3}
+                        stepRender={2}
+                        renderItem={(item) => (
+                            <div className={cx('memberItem')}>
+                                <Avatar
+                                    src={item.avatar}
+                                    sx={{
+                                        width: 24,
+                                        height: 24
+                                    }}
+                                />
+                                <span>
+                                    {item.name}
+                                </span>
+                                {item.userId === params.row.creator.id ? ' 🔱 Creator' : null}
+                            </div>
+                        )}
+                        getSearchKey={(item) => item.name}
+                        getItemsKey={(item) => item.userId}
+                        rootClass={cx('memberWrapper')}
+                        onChange={handleSelectUser}
+                        defaultPlaceHolder={(
+                            <AvatarGroup
+                                max={4}
+                                total={params.value.lenght}
+                                sx={{
+                                    '& .MuiAvatar-root': {
+                                        width: 24,
+                                        height: 24,
+                                        fontSize: 15
+                                    },
                                 }}
                             >
-                                <Avatar
-                                    key={item.userId}
-                                    src={item?.avatar}
-                                    alt={item.name}
-                                    variant="circular"
-                                />
-                            </Tooltip>
-                        ))
-                        }
-                    </AvatarGroup >
+                                {params.value?.map(item => (
+                                    <StyledTooltip
+                                        key={item.userId}
+                                        title={item.name}
+                                    >
+                                        <Avatar
+                                            className={cx('memberAvatar')}
+                                            key={item.userId}
+                                            src={item?.avatar}
+                                            alt={item.name}
+                                            variant="circular"
+                                        />
+                                    </StyledTooltip>
+                                ))
+                                }
+                            </AvatarGroup >
+                        )}
+                    />
                 )
             }
         },
@@ -178,7 +223,13 @@ const ProjectList = () => {
             minWidth: 80,
             renderCell: (params) => {
                 return (
-                    <MoreMenu items={actions} placement='bottom-end' onChange={({ action }) => { handleSelect(action, params.row.id) }}>
+                    <MoreMenu
+                        items={actions}
+                        placement='bottom-end'
+                        onChange={({ action }) => {
+                            handleSelectOptions(action, params.row.id)
+                        }}
+                    >
                         <MoreHorizOutlinedIcon />
                     </MoreMenu>
                 );

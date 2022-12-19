@@ -43,7 +43,7 @@ const taskSlice = createSlice({
             return {
                 ...state,
                 loading: true,
-                error: false
+                error: false,
             }
         })
 

@@ -1,10 +1,12 @@
 .wrapper {
     display: flex;
     height: 100%;
+    min-width: 400px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: var(--text-color);
+    margin-top: 60px;
 }
 
 .title {
